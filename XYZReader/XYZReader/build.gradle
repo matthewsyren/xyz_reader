@@ -25,7 +25,7 @@ android {
     buildToolsVersion "27.0.3"
 
     defaultConfig {
-        minSdkVersion 21
+        minSdkVersion 23
         targetSdkVersion 27
     }
 }
@@ -33,6 +33,7 @@ android {
 dependencies {
     implementation "com.android.support:support-v4:$androidSupportVersion"
     implementation "com.android.support:support-v13:$androidSupportVersion"
+    implementation "com.android.support:design:$androidSupportVersion"
     implementation "com.android.support:appcompat-v7:$androidSupportVersion"
     implementation "com.android.support:palette-v7:$androidSupportVersion"
     implementation "com.android.support:recyclerview-v7:$androidSupportVersion"
