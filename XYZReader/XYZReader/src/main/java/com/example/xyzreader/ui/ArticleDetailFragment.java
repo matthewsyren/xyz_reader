@@ -7,6 +7,7 @@ import android.content.Loader;
 import android.database.Cursor;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.v4.app.ShareCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.Html;
@@ -33,14 +34,15 @@ import java.util.GregorianCalendar;
  * either contained in a {@link ArticleListActivity} in two-pane mode (on
  * tablets) or a {@link ArticleDetailActivity} on handsets.
  */
-public class ArticleDetailFragment extends Fragment implements
-        LoaderManager.LoaderCallbacks<Cursor> {
+public class ArticleDetailFragment extends Fragment
+        implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final String TAG = "ArticleDetailFragment";
     public static final String ARG_ITEM_ID = "item_id";
     private Cursor mCursor;
     private long mItemId;
     private View mRootView;
     private ImageView mPhotoView;
+    private Toolbar mToolbar;
 
     private SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.sss");
     // Use default locale format
@@ -123,7 +125,26 @@ public class ArticleDetailFragment extends Fragment implements
         TextView bylineView = mRootView.findViewById(R.id.article_byline);
         bylineView.setMovementMethod(new LinkMovementMethod());
         TextView bodyView = mRootView.findViewById(R.id.article_body);
-        Toolbar toolbar = mRootView.findViewById(R.id.toolbar);
+        AppBarLayout appBarLayout = mRootView.findViewById(R.id.app_bar);
+
+        /*
+         * Adds OffsetChangedListener to the AppBarLayout, which will display the appropriate icons when the AppBar is collapsed or expanded
+         * Adapted from https://stackoverflow.com/questions/31682310/android-collapsingtoolbarlayout-collapse-listener?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
+         */
+        appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                if (Math.abs(verticalOffset) - appBarLayout.getTotalScrollRange() == 0) {
+                    //Displays a back Button icon with no shadow when the AppBar is collapsed
+                    mToolbar.setNavigationIcon(R.drawable.ic_arrow_back);
+                }
+                else {
+                    //Displays a back Button icon with a shadow when the AppBar is expanded (in order to make the icon visible regardless of the image behind it)
+                    mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_shadow);
+                }
+            }
+        });
+        mToolbar = mRootView.findViewById(R.id.toolbar);
 
         bodyView.setTypeface(Typeface.createFromAsset(getResources().getAssets(), "Rosario-Regular.ttf"));
 
@@ -134,12 +155,12 @@ public class ArticleDetailFragment extends Fragment implements
             String title = mCursor.getString(ArticleLoader.Query.TITLE);
 
             /*
-             * Sets the title on the Toolbar
+             * Sets the title on the Toolbar and displays the back Button
              * Adapted from https://stackoverflow.com/questions/26651602/display-back-arrow-on-toolbar?utm_medium=organic&utm_source=google_rich_qa&utm_campaign=google_rich_qa
              */
-            toolbar.setTitle(title);
-            toolbar.setNavigationIcon(R.drawable.ic_arrow_back);
-            toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            mToolbar.setTitle(title);
+            mToolbar.setNavigationIcon(R.drawable.ic_arrow_back_shadow);
+            mToolbar.setNavigationOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     getActivity().onBackPressed();
@@ -153,17 +174,16 @@ public class ArticleDetailFragment extends Fragment implements
                                 publishedDate.getTime(),
                                 System.currentTimeMillis(), DateUtils.HOUR_IN_MILLIS,
                                 DateUtils.FORMAT_ABBREV_ALL).toString()
-                                + " by <font color='#ffffff'>"
+                                + " by "
                                 + mCursor.getString(ArticleLoader.Query.AUTHOR)
                                 + "</font>"));
 
             } else {
                 // If date is before 1902, just show the string
                 bylineView.setText(Html.fromHtml(
-                        outputFormat.format(publishedDate) + " by <font color='#ffffff'>"
+                        outputFormat.format(publishedDate) + " by "
                         + mCursor.getString(ArticleLoader.Query.AUTHOR)
                                 + "</font>"));
-
             }
             bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
 
@@ -174,7 +194,7 @@ public class ArticleDetailFragment extends Fragment implements
                     .into(mPhotoView);
         } else {
             mRootView.setVisibility(View.GONE);
-            toolbar.setTitle("N/A");
+            mToolbar.setTitle("N/A");
             bylineView.setText("N/A" );
             bodyView.setText("N/A");
         }
