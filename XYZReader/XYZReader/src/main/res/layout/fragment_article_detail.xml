@@ -58,6 +58,7 @@
                 android:layout_gravity="bottom"
                 android:layout_marginTop="@dimen/byline_margin_top"
                 style="@style/TextAppearance.AppCompat.Title"
+                android:textStyle="bold"
                 android:layout_marginStart="@dimen/detail_inner_horiz_margin"/>
 
             <TextView
@@ -72,9 +73,7 @@
                 android:textColor="@color/black"
                 android:textColorLink="@color/theme_accent"
                 android:textSize="@dimen/detail_body_text_size"
-                android:lineSpacingMultiplier="@fraction/detail_body_line_spacing_multiplier"
-                android:ellipsize="end"
-                android:maxLines="100"/>
+                android:lineSpacingMultiplier="@fraction/detail_body_line_spacing_multiplier" />
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>
 

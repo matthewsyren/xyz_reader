@@ -15,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.text.Html;
 import android.text.format.DateUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -108,9 +109,32 @@ public class ArticleListActivity extends AppCompatActivity implements
         Adapter adapter = new Adapter(cursor);
         adapter.setHasStableIds(true);
         mRecyclerView.setAdapter(adapter);
-        int columnCount = getResources().getInteger(R.integer.list_column_count);
-        StaggeredGridLayoutManager sglm = new StaggeredGridLayoutManager(columnCount, StaggeredGridLayoutManager.VERTICAL);
-        mRecyclerView.setLayoutManager(sglm);
+        StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(getNumberOfColumns(), StaggeredGridLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(staggeredGridLayoutManager);
+    }
+
+    /*
+     * Used to calculate the number of columns that can be displayed in the RecyclerView
+     * Adapted from the feedback received for Stage 1 of Popular Movies
+     */
+    private int getNumberOfColumns() {
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+
+        //Calculates how many columns can be displayed based on the screen's width
+        int widthDivider = 425;
+        int width = displayMetrics.widthPixels;
+        int numberOfColumns = width / widthDivider;
+
+        //Ensures that there is at least 1 column regardless of screen width, and at most 3 columns
+        if (numberOfColumns < 1){
+            return 1;
+        }
+        else if(numberOfColumns > 3){
+            return 3;
+        }
+
+        return numberOfColumns;
     }
 
     @Override
