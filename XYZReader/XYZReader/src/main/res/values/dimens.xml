@@ -8,6 +8,15 @@
     <dimen name="fab_press_translation_z">6dp</dimen>
     <dimen name="fab_margin">24dp</dimen>
 
+    <!-- ArticleListActivity -->
+    <dimen name="frame_layout_elevation">8dp</dimen>
+    <dimen name="swipe_refresh_layout_margin_top">56dp</dimen>
+    <dimen name="recycler_view_padding_bottom">28dp</dimen>
+    <dimen name="card_view_margin">4dp</dimen>
+    <dimen name="article_subtitle_padding">6dp</dimen>
+    <dimen name="article_title_padding">6dp</dimen>
+    <dimen name="recycler_view_margin">4dp</dimen>
+
     <!-- DetailFragment -->
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="byline_margin_top">30dp</dimen>
