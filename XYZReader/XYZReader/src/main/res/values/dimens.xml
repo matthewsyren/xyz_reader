@@ -1,7 +1,7 @@
 <resources>
     <!-- detail -->
     <dimen name="detail_title_text_size">32sp</dimen>
-    <dimen name="detail_body_text_size">22sp</dimen>
+    <dimen name="detail_body_text_size">18sp</dimen>
     <item name="detail_body_line_spacing_multiplier" format="float" type="fraction">1.25</item>
 
     <dimen name="fab_elevation">2dp</dimen>
@@ -21,4 +21,5 @@
     <dimen name="app_bar_height">180dp</dimen>
     <dimen name="byline_margin_top">30dp</dimen>
     <dimen name="body_margin_top">16dp</dimen>
+    <dimen name="body_max_width">600dp</dimen>
 </resources>

@@ -185,7 +185,8 @@ public class ArticleDetailFragment extends Fragment
                         + mCursor.getString(ArticleLoader.Query.AUTHOR)
                                 + "</font>"));
             }
-            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("(\r\n|\n)", "<br />")));
+            bodyView.setText(Html.fromHtml(mCursor.getString(ArticleLoader.Query.BODY).replaceAll("\r\n\r\n", "<br /><br />")
+                    .replaceAll("(\r\n|\n)", " ")));
 
             //Loads the image with Picasso
             Picasso.with(getActivity())
